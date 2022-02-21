@@ -7,6 +7,12 @@
   padding: 20px 40px;
   background-color: vars.$white;
   border-radius: 10px;
+  transition: all 400ms ease;
+
+  &:hover {
+    transform: scale(1.05);
+    background-color: hsla(0, 0, 100%, 0.8);
+  }
 
   &-icon {
     align-self: center;
@@ -31,12 +37,6 @@
     p {
       font-size: 1rem;
       margin: 0;
-    }
-
-    h2 {
-      font-size: 3rem;
-      margin: 0;
-      font-weight: 400;
     }
   }
 }

@@ -18,6 +18,7 @@ type signupState = {
   idErr: string;
   phoneErr: string;
   nameErr: string;
+  userExistsErr: string;
 };
 
 class SignupForm extends Component<signupProp, signupState> {
@@ -40,14 +41,20 @@ class SignupForm extends Component<signupProp, signupState> {
     idErr: "",
     phoneErr: "",
     nameErr: "",
+    userExistsErr: "",
   };
 
   handleSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     if (this.validateUser()) {
+      const users: UserObj[] = JSON.parse(
+        localStorage.getItem("users") || "[]"
+      ) as UserObj[];
+      users.push(this.state.user);
+      localStorage.setItem("users", JSON.stringify(users));
       this.props.setUser(this.state.user);
     } else {
-      alert("Invalid data");
+      alert("Invalid Data");
     }
   };
 
@@ -156,12 +163,31 @@ class SignupForm extends Component<signupProp, signupState> {
     }
   };
 
+  userExists = (): boolean => {
+    const users: UserObj[] = JSON.parse(
+      localStorage.getItem("users") || "[]"
+    ) as UserObj[];
+    for (let item of users) {
+      if (item.id === this.state.user.id) {
+        this.setState((curState) => {
+          return {
+            ...curState,
+            userExistsErr: "User already exists",
+          };
+        });
+        return false;
+      }
+    }
+    return true;
+  };
+
   validateUser = (): boolean => {
     return (
       this.validatePwd() &&
       this.validateName() &&
       this.validateID() &&
-      this.validatePhone()
+      this.validatePhone() &&
+      this.userExists()
     );
   };
 
@@ -169,6 +195,9 @@ class SignupForm extends Component<signupProp, signupState> {
     const state = this.state;
     return (
       <form className="AuthForm" onSubmit={this.handleSubmit}>
+        <div className="AuthForm-err" style={{ fontSize: "1.5rem" }}>
+          {state.userExistsErr}
+        </div>
         <div>
           <div className="AuthForm-field">
             <input
@@ -177,7 +206,7 @@ class SignupForm extends Component<signupProp, signupState> {
               value={state.user.name}
               placeholder=" "
               onChange={(event) => {
-                this.handleChange("name", event.target.value);
+                this.handleChange("name", event.currentTarget.value);
               }}
             />
             <label htmlFor="name">Full Name</label>
@@ -192,7 +221,7 @@ class SignupForm extends Component<signupProp, signupState> {
               value={state.user.id}
               placeholder=" "
               onChange={(event) => {
-                this.handleChange("id", event.target.value);
+                this.handleChange("id", event.currentTarget.value);
               }}
             />
             <label htmlFor="id">BITS ID</label>
@@ -207,7 +236,7 @@ class SignupForm extends Component<signupProp, signupState> {
               value={state.user.phone}
               placeholder=" "
               onChange={(event) => {
-                this.handleChange("phone", event.target.value);
+                this.handleChange("phone", event.currentTarget.value);
               }}
             />
             <label htmlFor="phone">Phone Number</label>
@@ -222,7 +251,7 @@ class SignupForm extends Component<signupProp, signupState> {
               value={state.user.password}
               placeholder=" "
               onChange={(event) => {
-                this.handleChange("password", event.target.value);
+                this.handleChange("password", event.currentTarget.value);
               }}
             />
             <label htmlFor="password">Password</label>

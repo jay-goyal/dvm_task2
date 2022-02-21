@@ -1,0 +1,29 @@
+.App-title {
+  width: clamp(300px, 90%, 1800px);
+  margin: 20px auto;
+  display: grid;
+  grid-template-columns: 1fr 3fr 1fr;
+
+  h3 {
+    align-self: center;
+    justify-self: start;
+  }
+
+  h1 {
+    align-self: center;
+    justify-self: center;
+  }
+
+  &-btn {
+    align-self: center;
+    justify-self: end;
+  }
+}
+
+.App-header {
+  width: clamp(300px, 90%, 1800px);
+  margin: auto;
+  display: grid;
+  grid-template-columns: 3fr 1fr;
+  grid-column-gap: 40px;
+}

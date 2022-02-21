@@ -2,8 +2,8 @@
 
 .Auth {
   background-color: vars.$white;
-  padding: 0 20px 50px;
-  width: clamp(500px, 30%, 900px);
+  padding: 0 0 50px;
+  width: clamp(500px, 35%, 900px);
   margin: 200px auto;
 
   &-state {
@@ -49,9 +49,11 @@
 .AuthForm {
   display: grid;
   grid-template-columns: 1fr;
+  padding: 0 20px;
 
   &-err {
     color: vars.$radical-red;
+    font-size: 1.4rem;
 
     &-check {
       color: vars.$teal;

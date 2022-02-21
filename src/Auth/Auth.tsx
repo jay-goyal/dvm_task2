@@ -73,7 +73,7 @@ class Auth extends Component<authProp, authState> {
           {state.active === "Signup" ? (
             <SignupForm setUser={this.handleSet} />
           ) : (
-            <LoginForm {...state.user} />
+            <LoginForm loginFn={this.handleSet} />
           )}
         </div>
       </div>

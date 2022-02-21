@@ -11,6 +11,7 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import UserObj from "./types/user";
 import Auth from "./Auth/Auth";
+import "./App.scss";
 
 type appState = {
   items: ItemObj[];
@@ -59,63 +60,104 @@ class App extends Component<{}, appState> {
     },
   };
 
-  setUser = (user: UserObj) => {
+  initItems = (user: UserObj): ItemObj[] => {
+    return JSON.parse(localStorage.getItem(user.id) || "[]") as ItemObj[];
+  };
+
+  login = (user: UserObj) => {
+    let items = this.initItems(user);
     this.setState((curState) => {
       return {
         ...curState,
+        items: items,
         user: user,
+        cards: [
+          {
+            ...curState.cards[0],
+            value: this.getDelivered([...curState.items, ...items]),
+          },
+          {
+            ...curState.cards[1],
+            value: this.getReturned([...curState.items, ...items]),
+          },
+          {
+            ...curState.cards[2],
+            value: this.getPending([...curState.items, ...items]),
+          },
+        ],
       };
     });
   };
 
-  getDelivered = (item: ItemObj): number => {
-    const state = this.state;
-    let curDel = state.items.reduce((total: number, item: ItemObj): number => {
+  logout = () => {
+    this.setState((curState) => {
+      return {
+        ...curState,
+        user: {
+          name: "",
+          id: "",
+          phone: "",
+          password: "",
+        },
+      };
+    });
+  };
+
+  getDelivered = (item: ItemObj[]): number => {
+    return item.reduce((total: number, item: ItemObj): number => {
       if (item.delivered) {
         return total + item.qtyRecvd;
       }
       return total;
     }, 0);
-    return curDel + (item.delivered ? item.qtyRecvd : 0);
   };
 
-  getPending = (item: ItemObj): number => {
-    const state = this.state;
-    let curPending = state.items.reduce(
-      (total: number, item: ItemObj): number => {
-        if (!item.delivered) {
-          return total + item.qtyDemanded;
-        }
-        return total;
-      },
-      0
-    );
-    return curPending + (item.delivered ? 0 : item.qtyDemanded);
+  getPending = (item: ItemObj[]): number => {
+    return item.reduce((total: number, item: ItemObj): number => {
+      if (!item.delivered) {
+        return total + item.qtyDemanded;
+      }
+      return total;
+    }, 0);
   };
 
-  getReturned = (item: ItemObj): number => {
-    const state = this.state;
-    let curRet = state.items.reduce((total: number, item: ItemObj): number => {
+  getReturned = (item: ItemObj[]): number => {
+    return item.reduce((total: number, item: ItemObj): number => {
       if (item.delivered) {
         return total + item.qtyRet;
       }
       return total;
     }, 0);
-    return curRet + (item.delivered ? item.qtyRecvd : 0);
   };
 
   addItem = (item: ItemObj) => {
-    this.setState((curState) => {
-      return {
-        items: [...curState.items, item],
-        curItem: this.resetCurItem(),
-        cards: [
-          { ...curState.cards[0], value: this.getDelivered(item) },
-          { ...curState.cards[1], value: this.getReturned(item) },
-          { ...curState.cards[2], value: this.getPending(item) },
-        ],
-      };
-    });
+    this.setState(
+      (curState) => {
+        return {
+          items: [...curState.items, item],
+          curItem: this.resetCurItem(),
+          cards: [
+            {
+              ...curState.cards[0],
+              value: this.getDelivered([...curState.items, item]),
+            },
+            {
+              ...curState.cards[1],
+              value: this.getReturned([...curState.items, item]),
+            },
+            {
+              ...curState.cards[2],
+              value: this.getPending([...curState.items, item]),
+            },
+          ],
+        };
+      },
+      () =>
+        localStorage.setItem(
+          this.state.user.id,
+          JSON.stringify(this.state.items)
+        )
+    );
   };
 
   resetCurItem = (): ItemObj => {
@@ -140,7 +182,9 @@ class App extends Component<{}, appState> {
 
   deleteItem = (id: string) => {
     let newState = this.state.items.filter((item) => item.id !== id);
-    this.setState({ curItem: this.resetCurItem(), items: newState });
+    this.setState({ curItem: this.resetCurItem(), items: newState }, () =>
+      localStorage.setItem(this.state.user.id, JSON.stringify(this.state.items))
+    );
   };
 
   render() {
@@ -148,12 +192,21 @@ class App extends Component<{}, appState> {
     if (state.user.id === "") {
       return (
         <div>
-          <Auth setUser={this.setUser} />
+          <Auth setUser={this.login} />
         </div>
       );
     } else {
       return (
         <div>
+          <div className="App-title">
+            <h3>Hello, {state.user.name}</h3>
+            <h1>Vendor List</h1>
+            <div className="App-title-btn">
+              <button onClick={this.logout} className="btn">
+                Logout
+              </button>
+            </div>
+          </div>
           <div className="App-header">
             <EntryForm submitFn={this.addItem} item={state.curItem} />
             <CardsCont cards={state.cards} />

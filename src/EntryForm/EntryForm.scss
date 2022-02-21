@@ -5,11 +5,10 @@
   grid-template-columns: repeat(2, 1fr);
   grid-template-rows: repeat(3, 1fr);
   grid-column-gap: 50px;
-  width: clamp(300px, 80%, 1800px);
-  margin: 50px auto;
 
   &-err {
     color: vars.$radical-red;
+    font-size: 1.4rem;
   }
 
   &-field {
@@ -85,5 +84,8 @@
   &-btns {
     transform: translateY(15px);
     align-self: center;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    grid-column-gap: 20px;
   }
 }

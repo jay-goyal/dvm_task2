@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { Component, MouseEvent } from "react";
 import ItemObj from "../types/item";
 import "./Item.scss";
 
@@ -17,7 +17,8 @@ class Item extends Component<itemProp> {
     }
   };
 
-  handleDelete = () => {
+  handleDelete = (event: MouseEvent<HTMLButtonElement>) => {
+    event.stopPropagation();
     this.props.deleteFn(this.props.curItem.id);
   };
 
@@ -28,7 +29,7 @@ class Item extends Component<itemProp> {
       <div
         onClick={(event) => {
           event.stopPropagation();
-          this.handleDelete();
+          this.handleEdit();
         }}
         className="Item"
       >

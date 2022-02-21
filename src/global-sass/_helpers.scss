@@ -13,7 +13,6 @@
 
 .btn {
   padding: 20px 50px;
-  margin-right: 20px;
   background: linear-gradient(
       45deg,
       vars.$true-blue 0%,
@@ -28,7 +27,11 @@
   transition: all 400ms ease;
   box-sizing: border-box;
 
-  &:hover,
+  &:hover {
+    transform: scale(1.02);
+    background-position: 0 0;
+  }
+
   &:active {
     background-position: 0 0;
   }
