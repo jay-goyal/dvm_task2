@@ -9,7 +9,7 @@
   grid-template-rows: 3fr 1fr;
 
   .btn {
-    font-size: 1.5rem;
+    font-size: 1.1rem;
     padding: 10px 25px;
     border-radius: 25px;
   }
@@ -26,16 +26,28 @@
   }
 
   &-info {
-    font-size: 1.6rem;
+    font-size: 1.2rem;
   }
 
   &-delivered {
-    font-size: 1.2rem;
+    font-size: 1rem;
     color: vars.$teal;
   }
 
   &-undelivered {
     font-size: 1rem;
     color: vars.$radical-red;
+  }
+}
+
+@media (max-width: 900px) {
+  .Item {
+    grid-template-rows: 6fr 1fr;
+    padding: 10px 20px;
+
+    &-info-cont {
+      grid-template-columns: 1fr;
+      grid-template-rows: repeat(6, 1fr);
+    }
   }
 }

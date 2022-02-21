@@ -4,7 +4,7 @@
   display: grid;
   grid-template-columns: min-content 1fr;
   grid-column-gap: 20px;
-  padding: 20px 40px;
+  padding: 10px 20px;
   background-color: vars.$white;
   border-radius: 10px;
   transition: all 400ms ease;
@@ -16,7 +16,7 @@
 
   &-icon {
     align-self: center;
-    font-size: 5rem;
+    font-size: 2.8rem;
   }
 
   #delivered {
@@ -38,5 +38,15 @@
       font-size: 1rem;
       margin: 0;
     }
+  }
+}
+
+@media (max-width: 900px) {
+  .Card-cont {
+    display: none;
+  }
+
+  .Card {
+    display: none;
   }
 }

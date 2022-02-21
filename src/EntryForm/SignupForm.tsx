@@ -265,7 +265,7 @@ class SignupForm extends Component<signupProp, signupState> {
                     err.errExists ? "AuthForm-err" : "AuthForm-err-check"
                   }
                 >
-                  <FontAwesomeIcon icon={err.errExists ? faCheck : faXmark} />{" "}
+                  <FontAwesomeIcon icon={err.errExists ? faXmark : faCheck} />{" "}
                   {err.err}
                 </div>
               );

@@ -1,5 +1,5 @@
 .App-title {
-  width: clamp(300px, 90%, 1800px);
+  width: clamp(300px, 80%, 1800px);
   margin: 20px auto;
   display: grid;
   grid-template-columns: 1fr 3fr 1fr;
@@ -21,9 +21,35 @@
 }
 
 .App-header {
-  width: clamp(300px, 90%, 1800px);
+  width: clamp(300px, 80%, 1800px);
   margin: auto;
   display: grid;
   grid-template-columns: 3fr 1fr;
   grid-column-gap: 40px;
+}
+
+@media (max-width: 900px) {
+  .App-title {
+    grid-template-areas:
+      "ar1 ar2"
+      "ar3 ar3";
+    grid-template-rows: 1fr 1fr;
+    grid-template-columns: 1fr 1fr;
+
+    h3 {
+      grid-area: ar1;
+    }
+
+    h1 {
+      grid-area: ar3;
+    }
+
+    &-btn {
+      grid-area: ar2;
+    }
+  }
+
+  .App-header {
+    grid-template-columns: 1fr;
+  }
 }

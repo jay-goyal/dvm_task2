@@ -8,7 +8,7 @@
 
   &-err {
     color: vars.$radical-red;
-    font-size: 1.4rem;
+    font-size: 1rem;
   }
 
   &-field {
@@ -16,7 +16,7 @@
     width: 100%;
     position: relative;
     border-bottom: 2px dashed vars.$roman-silver;
-    margin: 64px auto 16px;
+    margin: 16px auto;
 
     input {
       z-index: 2;
@@ -72,7 +72,7 @@
       border-color: transparent;
 
       label {
-        transform: scale(0.8) translateY(-3rem);
+        transform: scale(0.8) translateY(-2rem);
       }
 
       &::after {
@@ -82,10 +82,26 @@
   }
 
   &-btns {
-    transform: translateY(15px);
-    align-self: center;
+    align-self: start;
     display: grid;
     grid-template-columns: repeat(2, 1fr);
     grid-column-gap: 20px;
+  }
+}
+
+@media (max-width: 700px) {
+  .EntryForm {
+    grid-template-columns: 1fr;
+    grid-template-rows: repeat(6, 1fr);
+
+    input:not(:placeholder-shown) + label {
+      transform: scale(0.8) translateY(-1.5rem);
+    }
+
+    &-field:focus-within {
+      label {
+        transform: scale(0.8) translateY(-1.5rem);
+      }
+    }
   }
 }

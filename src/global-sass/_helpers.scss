@@ -11,8 +11,16 @@
   justify-self: end;
 }
 
+@media (max-width: 900px) {
+  .start,
+  .center,
+  .end {
+    justify-self: start;
+  }
+}
+
 .btn {
-  padding: 20px 50px;
+  padding: 15px 50px;
   background: linear-gradient(
       45deg,
       vars.$true-blue 0%,
@@ -34,5 +42,11 @@
 
   &:active {
     background-position: 0 0;
+  }
+}
+
+@media (max-width: 900px) {
+  .btn {
+    padding: 10px 25px;
   }
 }

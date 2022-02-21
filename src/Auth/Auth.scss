@@ -3,8 +3,9 @@
 .Auth {
   background-color: vars.$white;
   padding: 0 0 50px;
-  width: clamp(500px, 35%, 900px);
-  margin: 200px auto;
+  width: clamp(300px, 50%, 900px);
+  height: auto;
+  margin: 200px auto auto;
 
   &-state {
     display: grid;
@@ -53,7 +54,7 @@
 
   &-err {
     color: vars.$radical-red;
-    font-size: 1.4rem;
+    font-size: 1rem;
 
     &-check {
       color: vars.$teal;
@@ -65,13 +66,13 @@
     width: 100%;
     position: relative;
     border-bottom: 2px dashed vars.$roman-silver;
-    margin: 64px auto 16px;
+    margin: 0 auto;
+    padding-top: 40px;
 
     input {
       z-index: 2;
       outline: none;
       border: none;
-      overflow: hidden;
       margin: 0;
       width: 100%;
       padding: 4px 0;
@@ -101,7 +102,7 @@
     }
 
     input:not(:placeholder-shown) + label {
-      transform: scale(0.8) translateY(-3rem);
+      transform: scale(0.8) translateY(-2rem);
     }
 
     &::after {
@@ -126,6 +127,24 @@
 
       &::after {
         transform: scaleX(1);
+      }
+    }
+  }
+}
+@media (max-width: 700px) {
+  .AuthForm {
+    input:not(:placeholder-shown) + label {
+      transform: scale(0.8) translateY(-1.5rem);
+    }
+
+    &-field {
+      margin: 0 auto;
+      padding-top: 20px;
+
+      &:focus-within {
+        label {
+          transform: scale(0.8) translateY(-1.5rem);
+        }
       }
     }
   }
