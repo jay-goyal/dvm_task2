@@ -74,15 +74,15 @@ class App extends Component<{}, appState> {
         cards: [
           {
             ...curState.cards[0],
-            value: this.getDelivered([...curState.items, ...items]),
+            value: this.getDelivered([...items]),
           },
           {
             ...curState.cards[1],
-            value: this.getReturned([...curState.items, ...items]),
+            value: this.getReturned([...items]),
           },
           {
             ...curState.cards[2],
-            value: this.getPending([...curState.items, ...items]),
+            value: this.getPending([...items]),
           },
         ],
       };
