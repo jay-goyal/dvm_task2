@@ -1,0 +1,21 @@
+#+TITLE: DVM Task 2
+#+AUTHOR: Jay Goyal
+
+A website with form validation.
+
+** Tech Stack
+	1. React
+	2. TypeScript
+	3. Sass
+
+* Features
+
+** Delivered and Undelivered Items
+   Leaving the received date, received quantity and returned quantity,
+   the item is marked undelivered in which case it can be edited.
+
+** Login
+   Each user has his/her own items and can be set after login.
+
+** Basic validation
+   All the basic features of validation have been implemented.
