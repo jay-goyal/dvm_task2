@@ -12,7 +12,7 @@ A website with form validation.
 
 ** Delivered and Undelivered Items
    Leaving the received date, received quantity and returned quantity,
-   the item is marked undelivered in which case it can be edited.
+   the item is marked undelivered in which case it can be edited by clicking on them.
 
 ** Login
    Each user has his/her own items and can be set after login.
