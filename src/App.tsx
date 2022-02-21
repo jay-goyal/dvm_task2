@@ -134,7 +134,7 @@ class App extends Component<{}, appState> {
     this.setState(
       (curState) => {
         return {
-          items: [...curState.items, item],
+          items: [item, ...curState.items],
           curItem: this.resetCurItem(),
           cards: [
             {
@@ -174,16 +174,44 @@ class App extends Component<{}, appState> {
 
   editItem = (item: ItemObj) => {
     let newState = this.state.items.filter((filItem) => filItem.id !== item.id);
-    this.setState({
-      items: newState,
-      curItem: item,
+    this.setState((curState) => {
+      return {
+        ...curState,
+        items: newState,
+        curItem: item,
+        cards: [
+          {
+            ...curState.cards[0],
+            value: this.getDelivered([...newState]),
+          },
+          {
+            ...curState.cards[1],
+            value: this.getReturned([...newState]),
+          },
+          {
+            ...curState.cards[2],
+            value: this.getPending([...newState]),
+          },
+        ],
+      };
     });
   };
 
   deleteItem = (id: string) => {
     let newState = this.state.items.filter((item) => item.id !== id);
-    this.setState({ curItem: this.resetCurItem(), items: newState }, () =>
-      localStorage.setItem(this.state.user.id, JSON.stringify(this.state.items))
+    this.setState(
+      (curState) => {
+        return {
+          ...curState,
+          curItem: this.resetCurItem(),
+          items: newState,
+        };
+      },
+      () =>
+        localStorage.setItem(
+          this.state.user.id,
+          JSON.stringify(this.state.items)
+        )
     );
   };
 
