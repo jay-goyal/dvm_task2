@@ -1,15 +1,61 @@
 @use "../global-sass/vars";
 
-.EntryForm {
+.Auth {
+  background-color: vars.$white;
+  padding: 0 20px 50px;
+  width: clamp(500px, 30%, 900px);
+  margin: 200px auto;
+
+  &-state {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  &-btn {
+    position: relative;
+    border: none;
+    outline: none;
+    background-color: vars.$white;
+    align-self: center;
+    font-weight: 400;
+    padding: 15px 0;
+    cursor: pointer;
+
+    &::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      width: 100%;
+      height: 4px;
+      display: block;
+      background-color: vars.$amethyst;
+      transform: scaleX(0);
+      transition: all 500ms ease;
+    }
+
+    &#active::before {
+      transform: scaleX(1);
+    }
+
+    &-login::before {
+      transform-origin: 100%;
+    }
+    &-signup::before {
+      transform-origin: 0;
+    }
+  }
+}
+
+.AuthForm {
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  grid-template-rows: repeat(3, 1fr);
-  grid-column-gap: 50px;
-  width: clamp(300px, 80%, 1800px);
-  margin: 50px auto;
+  grid-template-columns: 1fr;
 
   &-err {
     color: vars.$radical-red;
+
+    &-check {
+      color: vars.$teal;
+    }
   }
 
   &-field {
@@ -80,10 +126,5 @@
         transform: scaleX(1);
       }
     }
-  }
-
-  &-btns {
-    transform: translateY(15px);
-    align-self: center;
   }
 }

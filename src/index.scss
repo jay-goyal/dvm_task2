@@ -1,0 +1,26 @@
+@use "global-sass/vars";
+@import url("https://fonts.googleapis.com/css2?family=Lato:wght@300;400&display=swap");
+
+:root {
+  font-size: 100%;
+}
+
+body {
+  background-color: vars.$light-gray;
+  font-family: "Lato", sans-serif;
+  color: vars.$raisin-black;
+  padding: 0;
+  margin: 0;
+}
+
+* {
+  font-size: 1.8rem;
+  font-weight: 300;
+}
+
+.App-header {
+  padding: 0 60px;
+  display: grid;
+  grid-template-columns: 3fr 1fr;
+  grid-column-gap: 40px;
+}

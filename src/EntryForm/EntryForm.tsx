@@ -16,25 +16,23 @@ type formState = {
 };
 
 class EntryForm extends Component<formProp, formState> {
-  static defaultProps: formProp = {
-    item: {
-      expDelivery: "",
-      recvdDate: "",
-      qtyDemanded: 0,
-      qtyRecvd: 0,
-      qtyRet: 0,
-      delivered: false,
-      id: "",
-    },
-    submitFn: (item) => {},
-  };
-
-  state: formState = {
+  state = {
     curItem: this.props.item,
     qtyError: "",
     expDeliveryErr: "",
     recvdDateErr: "",
   };
+
+  componentDidUpdate(prevState: Readonly<formProp>) {
+    if (prevState.item !== this.props.item) {
+      this.setState((curState) => {
+        return {
+          ...curState,
+          curItem: this.props.item,
+        };
+      });
+    }
+  }
 
   validateForm = (): boolean => {
     const state = this.state;
@@ -43,12 +41,23 @@ class EntryForm extends Component<formProp, formState> {
     let expDeliveryError = "";
     let recvdDateError = "";
     if (
+      curItem.expDelivery !== "" &&
+      curItem.qtyDemanded !== 0 &&
       curItem.recvdDate === "" &&
       curItem.qtyRecvd === 0 &&
       curItem.qtyRet === 0
     ) {
       this.setState((curState) => {
-        return { ...curState, qtyError: "" };
+        return {
+          ...curState,
+          expDeliveryErr: expDeliveryError,
+          recvdDateErr: recvdDateError,
+          qtyError: "",
+          curItem: {
+            ...curState.curItem,
+            delivered: false,
+          },
+        };
       });
       return true;
     } else {
@@ -61,9 +70,11 @@ class EntryForm extends Component<formProp, formState> {
           return {
             ...curState,
             qtyError: "",
+            expDeliveryErr: expDeliveryError,
+            recvdDateErr: recvdDateError,
             curItem: {
               ...curState.curItem,
-              delivered: !curState.curItem.delivered,
+              delivered: true,
             },
           };
         });
@@ -78,10 +89,9 @@ class EntryForm extends Component<formProp, formState> {
         }
         if (
           curItem.recvdDate === "" &&
-          curItem.qtyRecvd === 0 &&
-          curItem.qtyRet === 0
+          (curItem.qtyRecvd !== 0 || curItem.qtyRet !== 0)
         ) {
-          recvdDateError = "The expected delivery date can't be empty";
+          recvdDateError = "The received delivery date can't be empty";
         }
         this.setState((curState) => {
           return {
@@ -104,8 +114,10 @@ class EntryForm extends Component<formProp, formState> {
       return {
         ...curState,
         curItem: { ...curState["curItem"], [name]: value },
+        qtyError: "",
+        expDeliveryErr: "",
       };
-    });
+    }, this.validateForm);
   };
 
   handleSubmit = (event: FormEvent<HTMLFormElement>) => {
@@ -128,15 +140,7 @@ class EntryForm extends Component<formProp, formState> {
   resetForm = () => {
     this.setState(() => {
       return {
-        curItem: {
-          expDelivery: "",
-          recvdDate: "",
-          qtyDemanded: 0,
-          qtyRecvd: 0,
-          qtyRet: 0,
-          delivered: false,
-          id: "",
-        },
+        curItem: this.props.item,
         qtyError: "",
         expDeliveryErr: "",
         recvdDateErr: "",
@@ -146,72 +150,107 @@ class EntryForm extends Component<formProp, formState> {
 
   render() {
     const state = this.state;
+    const curItem = state.curItem;
     return (
-      <div className="EntryForm">
-        <form onSubmit={this.handleSubmit}>
-          <div className="EntryForm-cont">
-            <input
-              type="date"
-              name="expDelivery"
-              value={state.curItem.expDelivery}
-              onChange={(e) => this.handleChange("expDelivery", e.target.value)}
-            />
-            <label htmlFor="expDelivery">Expected Delivery Date</label>
+      <form onSubmit={this.handleSubmit} className="EntryForm">
+        <div>
+          <div>
+            <div className="EntryForm-field">
+              <input
+                type="text"
+                onFocus={(event) => {
+                  event.target.type = "date";
+                }}
+                onBlur={(event) => {
+                  event.target.type = "text";
+                }}
+                value={curItem.expDelivery}
+                onChange={(e) => {
+                  this.handleChange("expDelivery", e.target.value);
+                }}
+                placeholder=" "
+              />
+              <label htmlFor="expDelivery">Expected Delivery Date</label>
+            </div>
             <div className="EntryForm-err">{state.expDeliveryErr}</div>
           </div>
-          <div className="EntryForm-cont">
+        </div>
+        <div>
+          <div className="EntryForm-field">
             <input
-              type="date"
+              type="text"
+              onFocus={(event) => {
+                event.target.type = "date";
+              }}
+              onBlur={(event) => {
+                event.target.type = "text";
+              }}
               name="recvdDate"
-              value={state.curItem.recvdDate}
-              onChange={(e) => this.handleChange("recvdDate", e.target.value)}
+              value={curItem.recvdDate}
+              onChange={(e) => {
+                this.handleChange("recvdDate", e.target.value);
+              }}
+              placeholder=" "
             />
             <label htmlFor="recvdDate">Received Date</label>
-            <div className="EntryForm-err">{state.recvdDateErr}</div>
           </div>
-          <div className="EntryForm-cont">
+          <div className="EntryForm-err">{state.recvdDateErr}</div>
+        </div>
+        <div>
+          <div className="EntryForm-field">
             <input
               type="number"
               name="qtyDemanded"
-              value={
-                state.curItem.qtyDemanded === 0 ? "" : state.curItem.qtyDemanded
-              }
-              onChange={(e) =>
-                this.handleChange("qtyDemanded", parseInt(e.target.value))
-              }
+              value={curItem.qtyDemanded !== 0 ? curItem.qtyDemanded : ""}
+              onChange={(e) => {
+                this.handleChange("qtyDemanded", parseInt(e.target.value));
+              }}
+              placeholder=" "
             />
             <label htmlFor="qtyDemanded">Quantity Demanded</label>
-            <div className="EntryForm-err">{state.qtyError}</div>
           </div>
-          <div className="EntryForm-cont">
+          <div className="EntryForm-err">{state.qtyError}</div>
+        </div>
+        <div>
+          <div className="EntryForm-field">
             <input
               type="number"
               name="qtyRecvd"
-              value={state.curItem.qtyRecvd === 0 ? "" : state.curItem.qtyRecvd}
-              onChange={(e) =>
-                this.handleChange("qtyRecvd", parseInt(e.target.value))
-              }
+              value={curItem.qtyRecvd !== 0 ? curItem.qtyRecvd : ""}
+              onChange={(e) => {
+                this.handleChange("qtyRecvd", parseInt(e.target.value));
+              }}
+              placeholder=" "
             />
             <label htmlFor="qtyRecvd">Quantity Received</label>
-            <div className="EntryForm-err">{state.qtyError}</div>
           </div>
-          <div className="EntryForm-cont">
+          <div className="EntryForm-err">{state.qtyError}</div>
+        </div>
+        <div>
+          <div className="EntryForm-field">
             <input
               type="number"
               name="qtyRet"
-              value={state.curItem.qtyRet === 0 ? "" : state.curItem.qtyRet}
-              onChange={(e) =>
-                this.handleChange("qtyRet", parseInt(e.target.value))
-              }
+              value={curItem.qtyRet !== 0 ? curItem.qtyRet : ""}
+              onChange={(e) => {
+                this.handleChange("qtyRet", parseInt(e.target.value));
+              }}
+              placeholder=" "
             />
-            <label htmlFor="">Quantity Returned</label>
-            <div className="EntryForm-err">{state.qtyError}</div>
+            <label htmlFor="qtyRet">Quantity Returned</label>
           </div>
-          <div className="EntryForm-cont">
-            <input type="submit" value="Submit" />
-          </div>
-        </form>
-      </div>
+          <div className="EntryForm-err">{state.qtyError}</div>
+        </div>
+        <div className="EntryForm-btns">
+          <input type="submit" value="Submit" className="btn" />
+          <input
+            type="button"
+            value="Reset"
+            className="btn"
+            onClick={this.resetForm}
+          />
+        </div>
+      </form>
     );
   }
 }

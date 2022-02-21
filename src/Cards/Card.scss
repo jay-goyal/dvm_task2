@@ -1,0 +1,42 @@
+@use "../global-sass/vars";
+
+.Card {
+  display: grid;
+  grid-template-columns: min-content 1fr;
+  grid-column-gap: 20px;
+  padding: 20px 40px;
+  background-color: vars.$white;
+  border-radius: 10px;
+
+  &-icon {
+    align-self: center;
+    font-size: 5rem;
+  }
+
+  #delivered {
+    color: vars.$teal;
+  }
+
+  #returned {
+    color: vars.$radical-red;
+  }
+
+  #pending {
+    color: vars.$corn;
+  }
+
+  &-text {
+    align-self: center;
+
+    p {
+      font-size: 1rem;
+      margin: 0;
+    }
+
+    h2 {
+      font-size: 3rem;
+      margin: 0;
+      font-weight: 400;
+    }
+  }
+}

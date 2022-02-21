@@ -1,0 +1,41 @@
+@use "../global-sass/vars";
+@use "../global-sass/helpers";
+
+.Item {
+  width: clamp(300px, 80%, 1800px);
+  margin: 0 auto;
+  padding: 20px 50px;
+  display: grid;
+  grid-template-rows: 3fr 1fr;
+
+  .btn {
+    font-size: 1.5rem;
+    padding: 10px 25px;
+    border-radius: 25px;
+  }
+
+  &-info-cont {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+  }
+  &-even {
+    background-color: vars.$white;
+  }
+  &-odd {
+    background-color: vars.$light-gray;
+  }
+
+  &-info {
+    font-size: 1.6rem;
+  }
+
+  &-delivered {
+    font-size: 1.2rem;
+    color: vars.$teal;
+  }
+
+  &-undelivered {
+    font-size: 1rem;
+    color: vars.$radical-red;
+  }
+}

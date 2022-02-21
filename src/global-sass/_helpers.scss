@@ -1,0 +1,35 @@
+@use "vars";
+.start {
+  justify-self: start;
+}
+
+.center {
+  justify-self: center;
+}
+
+.end {
+  justify-self: end;
+}
+
+.btn {
+  padding: 20px 50px;
+  margin-right: 20px;
+  background: linear-gradient(
+      45deg,
+      vars.$true-blue 0%,
+      vars.$amethyst 55%,
+      vars.$true-blue 90%
+    )
+    90% 0;
+  background-size: 200% 200%;
+  color: vars.$light-gray;
+  border-radius: 50px;
+  border: transparent;
+  transition: all 400ms ease;
+  box-sizing: border-box;
+
+  &:hover,
+  &:active {
+    background-position: 0 0;
+  }
+}
