@@ -52,7 +52,7 @@
     }
 
     input:not(:placeholder-shown) + label {
-      transform: scale(0.8) translateY(-3rem);
+      transform: scale(0.8) translateY(-2rem);
     }
 
     &::after {
